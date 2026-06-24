@@ -80,14 +80,9 @@ async def run_agent_cycle() -> JobRun:
                     key = (match_doc.resume_id, match_doc.job_id)
                     if key not in existing_match_keys:
                         new_matches_count += 1
-                        # Avoid duplicate notifications by only notifying (logging) for new matches above threshold
-                        if match_doc.overall_match_score >= settings.NOTIFICATION_THRESHOLD:
-                            logger.info(
-                                f"[NOTIFICATION] New job match alert! "
-                                f"Resume: {res.name} (ID: {res.id}) matches with "
-                                f"{job_doc.role} at {job_doc.company} ({job_doc.source}) "
-                                f"with match score {match_doc.overall_match_score * 100}%"
-                            )
+                        # Trigger autonomous notification dispatch for newly found match
+                        from app.services.notification_service import process_match_notifications
+                        await process_match_notifications(match_doc, res, job_doc)
             except Exception as e:
                 logger.error(f"Error calculating matches for resume '{res.id}': {e}")
                 

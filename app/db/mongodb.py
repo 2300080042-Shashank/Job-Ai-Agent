@@ -13,6 +13,7 @@ from app.models.resume import Resume
 from app.models.job import Job
 from app.models.match import Match
 from app.models.job_run import JobRun
+from app.models.notification import Notification
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ async def init_db():
         # Initialize beanie with Document classes
         await init_beanie(
             database=client[settings.MONGODB_DB_NAME],
-            document_models=[Resume, Job, Match, JobRun]
+            document_models=[Resume, Job, Match, JobRun, Notification]
         )
         logger.info("Successfully connected to MongoDB and initialized Beanie.")
     except Exception as e:
