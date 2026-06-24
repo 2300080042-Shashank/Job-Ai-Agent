@@ -61,11 +61,7 @@ async def send_test_notification():
     token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHAT_ID
     
-    test_msg = (
-        f"🤖 Notification Agent Connection Test\n\n"
-        f"FastAPI background agent test message.\n"
-        f"Time: {datetime.utcnow().isoformat()}"
-    )
+    test_msg = "🚀 AI Job Agent Notification Test Successful"
     
     is_simulated = (
         not token or 
