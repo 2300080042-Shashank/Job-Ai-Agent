@@ -10,8 +10,16 @@ from app.api.v1.router import api_router
 async def lifespan(app: FastAPI):
     # Startup: Initialize DB connection
     await init_db()
+    
+    # Start APScheduler background agent
+    from app.services.scheduler_service import start_scheduler
+    start_scheduler()
+    
     yield
-    # Shutdown logic (if any) could go here
+    
+    # Shutdown: Stop APScheduler background agent
+    from app.services.scheduler_service import shutdown_scheduler
+    shutdown_scheduler()
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
