@@ -10,6 +10,7 @@ if not hasattr(AsyncIOMotorClient, "append_metadata"):
 
 from app.core.config import settings
 from app.models.resume import Resume
+from app.models.job import Job
 
 logger = logging.getLogger(__name__)
 
@@ -21,10 +22,10 @@ async def init_db():
         # Create Motor client
         client = AsyncIOMotorClient(settings.MONGODB_URI)
         
-        # Initialize beanie with the Resume document class
+        # Initialize beanie with Document classes
         await init_beanie(
             database=client[settings.MONGODB_DB_NAME],
-            document_models=[Resume]
+            document_models=[Resume, Job]
         )
         logger.info("Successfully connected to MongoDB and initialized Beanie.")
     except Exception as e:
